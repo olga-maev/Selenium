@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,6 +34,8 @@ class CallbackTest {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999/");
+
     }
 
     @AfterEach
@@ -41,97 +44,99 @@ class CallbackTest {
         driver = null;
     }
     @Test
-    void shouldTestPositive1() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иванов Иван");
-        elements.get(1).sendKeys("+79874561221");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
+    void shouldTestPositive1AllValidValue() {
 
-        String text = driver.findElement(By.className("heading_theme_alfa-on-white")).getText();
-        assertEquals("Заявка на дебетовую карту", text.trim());
+
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иван Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+78987456321");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
+
+        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
+        assertEquals(expected, actual);
     }
     @Test
-    void shouldTestPositive2() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иванов-Петров Иван");
-        elements.get(1).sendKeys("+79874561221");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
+    void shouldTestPositive2DoubleSecondName() {
 
-        String text = driver.findElement(By.className("heading_theme_alfa-on-white")).getText();
-        assertEquals("Заявка на дебетовую карту", text.trim());
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов-Петров Иван");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
+
+
+        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
+        assertEquals(expected, actual);
     }
     @Test
-    void shouldTestPositive3() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иванов Иван-Сергей");
-        elements.get(1).sendKeys("+79874561221");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
+    void shouldTestPositive3DoubleFirstName(){
 
-        String text = driver.findElement(By.className("heading_theme_alfa-on-white")).getText();
-        assertEquals("Заявка на дебетовую карту", text.trim());
-    }
-    @Test
-    void shouldTestPositive4() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Д'Иванов Иван");
-        elements.get(1).sendKeys("+79874561221");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Иван-Сергей");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
 
-        String text = driver.findElement(By.className("heading_theme_alfa-on-white")).getText();
-        assertEquals("Заявка на дебетовую карту", text.trim());
+        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
+        assertEquals(expected, actual);
     }
+//    @Test
+//    void shouldTestPositive4ApostropheInSurname(){
+//
+//        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Д'Иванов Иван");
+//        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
+//        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+//        driver.findElement(By.cssSelector("span.button__text")).click();
+//
+//        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+//        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
+//        assertEquals(expected, actual);
+//    }
     @Test
-    void shouldTestNegative1() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Ivanov Иван");
-        elements.get(1).sendKeys("+79874561221");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
+    void shouldTestNegative1EnglishSecondName() {
 
-        String text = driver.findElement(By.className("input__sub")).getText();
-        assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
-    }
-    @Test
-    void shouldTestNegative2() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иванов Ivan");
-        elements.get(1).sendKeys("+79874561221");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Ivanov Иван");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
+
 
         String text = driver.findElement(By.className("input__sub")).getText();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
     }
     @Test
-    void shouldTestNegative3() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("1233 Иван");
-        elements.get(1).sendKeys("+79874561221");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
+    void shouldTestNegative2EnglishFirstName(){
+
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Ivan");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
+
 
         String text = driver.findElement(By.className("input__sub")).getText();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
     }
     @Test
-    void shouldTestNegative4() throws InterruptedException {
-        driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иванов 123");
-        elements.get(1).sendKeys("+79874561221");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
+    void shouldTestNegative3NumberAsSecondName() {
+
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("1233 Иван");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
+
+
+        String text = driver.findElement(By.className("input__sub")).getText();
+        assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
+    }
+    @Test
+    void shouldTestNegative4NumberAsFirstName(){
+
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов 123");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
+
 
         String text = driver.findElement(By.className("input__sub")).getText();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
