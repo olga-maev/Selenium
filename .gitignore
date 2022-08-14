@@ -24,6 +24,8 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
+/.idea/workspace.xml
+
 
 ### VS Code ###
 .vscode/
