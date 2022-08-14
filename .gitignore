@@ -1,5 +1,3 @@
-Thumbs.db*
-.DS_Store
 HELP.md
 .gradle
 build/
@@ -26,8 +24,6 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
-/driver
-/.idea
 
 ### VS Code ###
 .vscode/
