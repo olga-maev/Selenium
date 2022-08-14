@@ -107,8 +107,8 @@ class CallbackTest {
         driver.findElement(By.cssSelector("span.button__text")).click();
 
 
-        String text = driver.findElement(By.className("input__sub")).getText();
-        assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
+        String text = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText().trim();
+        assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text);
     }
 
     @Test
@@ -120,7 +120,7 @@ class CallbackTest {
         driver.findElement(By.cssSelector("span.button__text")).click();
 
 
-        String text = driver.findElement(By.className("input__sub")).getText();
+        String text = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText().trim();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
     }
 
@@ -133,7 +133,7 @@ class CallbackTest {
         driver.findElement(By.cssSelector("span.button__text")).click();
 
 
-        String text = driver.findElement(By.className("input__sub")).getText();
+        String text = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText().trim();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
     }
 
@@ -146,8 +146,41 @@ class CallbackTest {
         driver.findElement(By.cssSelector("span.button__text")).click();
 
 
-        String text = driver.findElement(By.className("input__sub")).getText();
+        String text = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText().trim();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
+    }
+
+    @Test
+    void shouldTestNegative5NumberPhone() {
+
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Иван");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+798745621");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
+
+
+        String text = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub")).getText();
+        assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", text.trim());
+    }
+
+    @Test
+    void shouldTestNegative6CheckboxOff() {
+
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Иван Иванов");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79031234567");
+        driver.findElement(By.tagName("button")).click();
+
+        String text = driver.findElement(By.cssSelector("[data-test-id=agreement].input_invalid")).getText();
+        assertEquals("Я соглашаюсь с условиями обработки и использования моих персональных данных и разрешаю сделать запрос в бюро кредитных историй", text.trim());
+    }
+
+    @Test
+    void shouldTestNegative7EmptyForm() {
+
+        driver.findElement(By.tagName("button")).click();
+
+        String text = driver.findElement(By.cssSelector("[data-test-id=name].input_invalid .input__sub")).getText();
+        assertEquals("Поле обязательно для заполнения", text.trim());
     }
 
 }
