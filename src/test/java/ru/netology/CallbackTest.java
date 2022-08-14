@@ -175,7 +175,31 @@ class CallbackTest {
     }
 
     @Test
-    void shouldTestNegative7EmptyForm() {
+    void shouldTestNegative7NameOff() {
+
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+798745621");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
+
+        String expected = "Поле обязательно для заполнения";
+        String actual = driver.findElement(By.cssSelector("[data-test-id=name].input_invalid .input__sub")).getText().trim();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldTestNegative8NumberOff() {
+
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Иванов Иван");
+        driver.findElement(By.cssSelector("span.checkbox__text")).click();
+        driver.findElement(By.cssSelector("span.button__text")).click();
+
+        String expected = "Поле обязательно для заполнения";
+        String actual = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub")).getText().trim();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldTestNegative9EmptyForm() {
 
         driver.findElement(By.tagName("button")).click();
         String expected = "Поле обязательно для заполнения";
