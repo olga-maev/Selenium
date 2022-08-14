@@ -23,7 +23,8 @@ class CallbackTest {
 
     @BeforeAll
     static void setUpAll() {
-        WebDriverManager.chromedriver().setup();;
+        WebDriverManager.chromedriver().setup();
+        ;
     }
 
     @BeforeEach
@@ -43,6 +44,7 @@ class CallbackTest {
         driver.quit();
         driver = null;
     }
+
     @Test
     void shouldTestPositive1AllValidValue() {
 
@@ -56,6 +58,7 @@ class CallbackTest {
         String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
         assertEquals(expected, actual);
     }
+
     @Test
     void shouldTestPositive2DoubleSecondName() {
 
@@ -69,8 +72,9 @@ class CallbackTest {
         String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
         assertEquals(expected, actual);
     }
+
     @Test
-    void shouldTestPositive3DoubleFirstName(){
+    void shouldTestPositive3DoubleFirstName() {
 
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Иван-Сергей");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
@@ -81,7 +85,8 @@ class CallbackTest {
         String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
         assertEquals(expected, actual);
     }
-//    @Test
+
+    //    @Test
 //    void shouldTestPositive4ApostropheInSurname(){
 //
 //        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Д'Иванов Иван");
@@ -105,8 +110,9 @@ class CallbackTest {
         String text = driver.findElement(By.className("input__sub")).getText();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
     }
+
     @Test
-    void shouldTestNegative2EnglishFirstName(){
+    void shouldTestNegative2EnglishFirstName() {
 
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Ivan");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
@@ -117,6 +123,7 @@ class CallbackTest {
         String text = driver.findElement(By.className("input__sub")).getText();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
     }
+
     @Test
     void shouldTestNegative3NumberAsSecondName() {
 
@@ -129,8 +136,9 @@ class CallbackTest {
         String text = driver.findElement(By.className("input__sub")).getText();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
     }
+
     @Test
-    void shouldTestNegative4NumberAsFirstName(){
+    void shouldTestNegative4NumberAsFirstName() {
 
         driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов 123");
         driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79874561221");
